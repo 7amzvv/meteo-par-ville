@@ -26,9 +26,10 @@ form.addEventListener("submit", async (event) => {
             const item = document.createElement("li");
             const button = document.createElement("button");
             button.type = "button";
-            button.textContent = [place.name, place.admin1, place.country].filter(Boolean).join(", ");
+            const label = [place.name, place.admin1, place.country].filter(Boolean).join(", ");
+            button.textContent = label;
             button.addEventListener("click", () => {
-                statusMessage.textContent = `${place.name} — Latitude : ${place.latitude} · Longitude : ${place.longitude}`;
+                statusMessage.textContent = `${label} — Latitude : ${place.latitude} · Longitude : ${place.longitude}`;
             });
             item.append(button);
             cityResults.append(item);
