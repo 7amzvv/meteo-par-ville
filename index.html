@@ -9,31 +9,33 @@
 </head>
 <body>
     <main>
-        <h1>Météo par ville</h1>
+        <header>
+            <h1>Météo par ville</h1>
+            <button id="theme-toggle" type="button" aria-pressed="false">Mode sombre</button>
+        </header>
         <form id="weather-form" novalidate>
             <label for="city">Ville</label>
-            <input id="city" name="city" type="search" required>
-            <button type="submit">Rechercher</button>
+            <div class="search">
+                <input id="city" name="city" type="search" required>
+                <button type="submit">Rechercher</button>
+            </div>
         </form>
         <p id="status" role="status"></p>
         <ul id="city-results" aria-label="Villes trouvées"></ul>
-        <table id="weather-table" hidden>
-            <caption id="weather-city"></caption>
-            <tbody>
-                <tr>
-                    <th scope="row">Température</th>
-                    <td id="temperature"></td>
-                </tr>
-                <tr>
-                    <th scope="row">Humidité</th>
-                    <td id="humidity"></td>
-                </tr>
-                <tr>
-                    <th scope="row">Vent</th>
-                    <td id="wind"></td>
-                </tr>
-            </tbody>
-        </table>
+        <section id="weather-bulletin" aria-labelledby="weather-city" aria-live="polite" hidden>
+            <h2 id="weather-city"></h2>
+            <div class="current">
+                <div>
+                    <p id="temperature"></p>
+                    <p id="weather-condition"></p>
+                </div>
+                <span id="weather-icon" aria-hidden="true"></span>
+            </div>
+            <dl>
+                <div><dt>Humidité</dt><dd id="humidity"></dd></div>
+                <div><dt>Vent</dt><dd id="wind"></dd></div>
+            </dl>
+        </section>
     </main>
 </body>
 </html>

@@ -2,19 +2,29 @@ const form = document.querySelector("#weather-form");
 const cityField = document.querySelector("#city");
 const statusMessage = document.querySelector("#status");
 const cityResults = document.querySelector("#city-results");
-const weatherTable = document.querySelector("#weather-table");
+const weatherBulletin = document.querySelector("#weather-bulletin");
 const weatherCity = document.querySelector("#weather-city");
 const temperature = document.querySelector("#temperature");
 const humidity = document.querySelector("#humidity");
 const wind = document.querySelector("#wind");
+const weatherCondition = document.querySelector("#weather-condition");
+const weatherIcon = document.querySelector("#weather-icon");
+const themeToggle = document.querySelector("#theme-toggle");
 let latestRequest = 0;
+
+themeToggle.addEventListener("click", () => {
+    const dark = document.documentElement.dataset.theme !== "dark";
+    document.documentElement.dataset.theme = dark ? "dark" : "light";
+    themeToggle.setAttribute("aria-pressed", String(dark));
+    themeToggle.textContent = dark ? "Mode clair" : "Mode sombre";
+});
 
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
     const search = ++latestRequest;
     const city = cityField.value.trim();
     cityResults.replaceChildren();
-    weatherTable.hidden = true;
+    weatherBulletin.hidden = true;
 
     if (!city) {
         statusMessage.textContent = "Saisis un nom de ville.";
@@ -60,16 +70,20 @@ async function findCities(city) {
 
 async function loadWeather(place, label) {
     const request = ++latestRequest;
-    weatherTable.hidden = true;
+    weatherBulletin.hidden = true;
     statusMessage.textContent = `Chargement de la météo pour ${label}…`;
     try {
         const data = await fetchWeather(place.latitude, place.longitude);
         if (request === latestRequest) {
-            weatherCity.textContent = `Météo actuelle — ${label}`;
+            weatherCity.textContent = label;
             temperature.textContent = formatMeasure(data, "temperature_2m");
             humidity.textContent = formatMeasure(data, "relative_humidity_2m");
             wind.textContent = formatMeasure(data, "wind_speed_10m");
-            weatherTable.hidden = false;
+            const [condition, icon] = describeWeather(data.current);
+            weatherCondition.textContent = condition;
+            weatherIcon.textContent = icon;
+            weatherIcon.hidden = !icon;
+            weatherBulletin.hidden = false;
             statusMessage.textContent = "";
         }
     } catch {
@@ -77,6 +91,19 @@ async function loadWeather(place, label) {
             statusMessage.textContent = `Impossible de récupérer la météo pour ${label}.`;
         }
     }
+}
+
+function describeWeather({weather_code: code, wind_speed_10m: speed, is_day: isDay}) {
+    if ([95, 96, 97, 99].includes(code)) return ["Orage", "⛈️"];
+    if ([71, 73, 75, 77, 85, 86].includes(code)) return ["Neige", "🌨️"];
+    if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return ["Pluie", "🌧️"];
+    if ([45, 48].includes(code)) return ["Brouillard", "🌫️"];
+    if (speed >= 40) return ["Venteux", "💨"];
+    if (code === 2 || code === 3) return ["Nuageux", "☁️"];
+    if (code === 0 || code === 1) {
+        return isDay === 0 ? ["Nuit claire", "🌙"] : ["Ensoleillé", "☀️"];
+    }
+    return ["Conditions indisponibles", ""];
 }
 
 function formatMeasure(data, field) {
@@ -94,7 +121,8 @@ async function fetchWeather(latitude, longitude) {
     url.search = new URLSearchParams({
         latitude,
         longitude,
-        current: "temperature_2m,relative_humidity_2m,wind_speed_10m"
+        wind_speed_unit: "kmh",
+        current: "temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,is_day"
     });
     const response = await fetch(url);
     if (!response.ok) {

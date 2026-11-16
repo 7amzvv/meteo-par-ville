@@ -1,54 +1,93 @@
 :root {
-    color: #252b30;
-    background: #f7f8fa;
+    color-scheme: light;
+    --paper: #f2f9fd;
+    --surface: #fff;
+    --ink: #193347;
+    --muted: #3d586c;
+    --border: #7396ad;
+    --sky: #d1edfc;
+    --blue: #165b84;
+    color: var(--ink);
+    background: var(--paper);
     font-family: system-ui, sans-serif;
     line-height: 1.5;
 }
 
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #101e2a;
+    --surface: #152a3a;
+    --ink: #e7f4fc;
+    --muted: #afcadc;
+    --border: #6a8ca3;
+    --sky: #23465e;
+    --blue: #a5ddff;
+}
+
 main {
-    max-width: 36rem;
+    max-width: 34rem;
     margin: 3rem auto;
     padding: 0 1rem 2rem;
 }
 
+header,
+.current {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+header {
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+h1,
+h2,
+.current p {
+    margin: 0;
+}
+
 h1 {
-    margin: 0 0 1.5rem;
-    font-size: 2rem;
+    font-size: 1.8rem;
     line-height: 1.2;
 }
 
-form {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+h2 {
+    font-size: 1.1rem;
+    overflow-wrap: anywhere;
 }
 
 label {
-    font-weight: 600;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.search {
+    display: flex;
+    gap: 0.5rem;
 }
 
 input,
 button {
+    box-sizing: border-box;
     padding: 0.55rem 0.75rem;
-    border: 1px solid #aeb8c2;
+    border: 1px solid var(--border);
     border-radius: 0.25rem;
+    color: var(--ink);
     font: inherit;
 }
 
 input {
     flex: 1;
     min-width: 0;
-    background: white;
+    background: var(--surface);
 }
 
 button {
+    background: var(--sky);
     cursor: pointer;
-}
-
-form button {
-    color: white;
-    background: #245679;
-    border-color: #245679;
 }
 
 #status:empty,
@@ -66,41 +105,57 @@ form button {
 }
 
 #city-results button {
-    color: #245679;
-    background: white;
+    max-width: 100%;
+    color: var(--blue);
+    background: var(--surface);
     text-align: left;
+    overflow-wrap: anywhere;
 }
 
-table {
-    width: 100%;
+#weather-bulletin {
     margin-top: 1.5rem;
-    border-collapse: collapse;
-    background: white;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
 }
 
-caption {
-    padding-bottom: 0.5rem;
+.current {
+    margin: 0.5rem 0 1rem;
+}
+
+#temperature {
+    color: var(--blue);
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
     font-weight: 600;
-    text-align: left;
+    line-height: 1.2;
 }
 
-th,
-td {
-    padding: 0.6rem 0.75rem;
-    border-bottom: 1px solid #d4dbe2;
+#weather-icon {
+    flex: 0 0 auto;
+    padding: 0.4rem 0.75rem;
+    border-radius: 50%;
+    background: var(--sky);
+    font-size: 2rem;
 }
 
-th {
-    text-align: left;
+dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
 }
 
-td {
-    text-align: right;
+dt {
+    color: var(--muted);
+}
+
+dd {
+    margin: 0;
+    font-weight: 600;
 }
 
 input:focus-visible,
 button:focus-visible {
-    outline: 2px solid #245679;
+    outline: 2px solid var(--blue);
     outline-offset: 2px;
 }
 
@@ -109,8 +164,7 @@ button:focus-visible {
         margin-top: 2rem;
     }
 
-    form {
+    .search {
         flex-direction: column;
-        align-items: stretch;
     }
 }
