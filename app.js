@@ -14,6 +14,7 @@ form.addEventListener("submit", async (event) => {
     const search = ++latestRequest;
     const city = cityField.value.trim();
     cityResults.replaceChildren();
+    weatherTable.hidden = true;
 
     if (!city) {
         statusMessage.textContent = "Saisis un nom de ville.";
@@ -59,6 +60,7 @@ async function findCities(city) {
 
 async function loadWeather(place, label) {
     const request = ++latestRequest;
+    weatherTable.hidden = true;
     statusMessage.textContent = `Chargement de la météo pour ${label}…`;
     try {
         const data = await fetchWeather(place.latitude, place.longitude);
