@@ -2,6 +2,11 @@ const form = document.querySelector("#weather-form");
 const cityField = document.querySelector("#city");
 const statusMessage = document.querySelector("#status");
 const cityResults = document.querySelector("#city-results");
+const weatherTable = document.querySelector("#weather-table");
+const weatherCity = document.querySelector("#weather-city");
+const temperature = document.querySelector("#temperature");
+const humidity = document.querySelector("#humidity");
+const wind = document.querySelector("#wind");
 let latestRequest = 0;
 
 form.addEventListener("submit", async (event) => {
@@ -56,9 +61,14 @@ async function loadWeather(place, label) {
     const request = ++latestRequest;
     statusMessage.textContent = `Chargement de la météo pour ${label}…`;
     try {
-        await fetchWeather(place.latitude, place.longitude);
+        const data = await fetchWeather(place.latitude, place.longitude);
         if (request === latestRequest) {
-            statusMessage.textContent = `Météo reçue pour ${label}.`;
+            weatherCity.textContent = `Météo actuelle — ${label}`;
+            temperature.textContent = data.current.temperature_2m;
+            humidity.textContent = data.current.relative_humidity_2m;
+            wind.textContent = data.current.wind_speed_10m;
+            weatherTable.hidden = false;
+            statusMessage.textContent = "";
         }
     } catch {
         if (request === latestRequest) {
