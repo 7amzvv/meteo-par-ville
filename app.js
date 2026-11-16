@@ -81,6 +81,10 @@ async function loadWeather(place, label) {
 
 function formatMeasure(data, field) {
     const value = data.current[field];
+    if (!Number.isFinite(value)) {
+        return "Indisponible";
+    }
+
     const unit = data.current_units?.[field];
     return unit ? `${value} ${unit}` : String(value);
 }
