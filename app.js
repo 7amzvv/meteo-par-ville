@@ -24,7 +24,13 @@ form.addEventListener("submit", async (event) => {
 
         for (const place of cities) {
             const item = document.createElement("li");
-            item.textContent = [place.name, place.admin1, place.country].filter(Boolean).join(", ");
+            const button = document.createElement("button");
+            button.type = "button";
+            button.textContent = [place.name, place.admin1, place.country].filter(Boolean).join(", ");
+            button.addEventListener("click", () => {
+                statusMessage.textContent = `${place.name} — Latitude : ${place.latitude} · Longitude : ${place.longitude}`;
+            });
+            item.append(button);
             cityResults.append(item);
         }
         statusMessage.textContent = cities.length ? "" : "Aucune ville trouvée.";
