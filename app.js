@@ -2,11 +2,11 @@ const form = document.querySelector("#weather-form");
 const cityField = document.querySelector("#city");
 const statusMessage = document.querySelector("#status");
 const cityResults = document.querySelector("#city-results");
-let latestSearch = 0;
+let latestRequest = 0;
 
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    const search = ++latestSearch;
+    const search = ++latestRequest;
     const city = cityField.value.trim();
     cityResults.replaceChildren();
 
@@ -18,7 +18,7 @@ form.addEventListener("submit", async (event) => {
     statusMessage.textContent = "Recherche en cours…";
     try {
         const cities = await findCities(city);
-        if (search !== latestSearch) {
+        if (search !== latestRequest) {
             return;
         }
 
@@ -34,7 +34,7 @@ form.addEventListener("submit", async (event) => {
         }
         statusMessage.textContent = cities.length ? "" : "Aucune ville trouvée.";
     } catch {
-        if (search === latestSearch) {
+        if (search === latestRequest) {
             statusMessage.textContent = "La recherche a échoué. Réessaie dans un instant.";
         }
     }
@@ -53,12 +53,17 @@ async function findCities(city) {
 }
 
 async function loadWeather(place, label) {
+    const request = ++latestRequest;
     statusMessage.textContent = `Chargement de la météo pour ${label}…`;
     try {
         await fetchWeather(place.latitude, place.longitude);
-        statusMessage.textContent = `Météo reçue pour ${label}.`;
+        if (request === latestRequest) {
+            statusMessage.textContent = `Météo reçue pour ${label}.`;
+        }
     } catch {
-        statusMessage.textContent = `Impossible de récupérer la météo pour ${label}.`;
+        if (request === latestRequest) {
+            statusMessage.textContent = `Impossible de récupérer la météo pour ${label}.`;
+        }
     }
 }
 
