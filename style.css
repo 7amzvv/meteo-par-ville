@@ -97,3 +97,20 @@ th {
 td {
     text-align: right;
 }
+
+input:focus-visible,
+button:focus-visible {
+    outline: 2px solid #245679;
+    outline-offset: 2px;
+}
+
+@media (max-width: 30rem) {
+    main {
+        margin-top: 2rem;
+    }
+
+    form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
