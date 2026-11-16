@@ -1,0 +1,99 @@
+:root {
+    color: #252b30;
+    background: #f7f8fa;
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+}
+
+main {
+    max-width: 36rem;
+    margin: 3rem auto;
+    padding: 0 1rem 2rem;
+}
+
+h1 {
+    margin: 0 0 1.5rem;
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
+form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+label {
+    font-weight: 600;
+}
+
+input,
+button {
+    padding: 0.55rem 0.75rem;
+    border: 1px solid #aeb8c2;
+    border-radius: 0.25rem;
+    font: inherit;
+}
+
+input {
+    flex: 1;
+    min-width: 0;
+    background: white;
+}
+
+button {
+    cursor: pointer;
+}
+
+form button {
+    color: white;
+    background: #245679;
+    border-color: #245679;
+}
+
+#status:empty,
+#city-results:empty {
+    margin: 0;
+}
+
+#city-results {
+    padding: 0;
+    list-style: none;
+}
+
+#city-results li + li {
+    margin-top: 0.5rem;
+}
+
+#city-results button {
+    color: #245679;
+    background: white;
+    text-align: left;
+}
+
+table {
+    width: 100%;
+    margin-top: 1.5rem;
+    border-collapse: collapse;
+    background: white;
+}
+
+caption {
+    padding-bottom: 0.5rem;
+    font-weight: 600;
+    text-align: left;
+}
+
+th,
+td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid #d4dbe2;
+}
+
+th {
+    text-align: left;
+}
+
+td {
+    text-align: right;
+}
