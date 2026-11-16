@@ -24,7 +24,7 @@ form.addEventListener("submit", async (event) => {
 
         for (const place of cities) {
             const item = document.createElement("li");
-            item.textContent = `${place.name}, ${place.admin1}, ${place.country}`;
+            item.textContent = [place.name, place.admin1, place.country].filter(Boolean).join(", ");
             cityResults.append(item);
         }
         statusMessage.textContent = cities.length ? "" : "Aucune ville trouvée.";
