@@ -66,9 +66,9 @@ async function loadWeather(place, label) {
         const data = await fetchWeather(place.latitude, place.longitude);
         if (request === latestRequest) {
             weatherCity.textContent = `Météo actuelle — ${label}`;
-            temperature.textContent = data.current.temperature_2m;
-            humidity.textContent = data.current.relative_humidity_2m;
-            wind.textContent = data.current.wind_speed_10m;
+            temperature.textContent = formatMeasure(data, "temperature_2m");
+            humidity.textContent = formatMeasure(data, "relative_humidity_2m");
+            wind.textContent = formatMeasure(data, "wind_speed_10m");
             weatherTable.hidden = false;
             statusMessage.textContent = "";
         }
@@ -77,6 +77,12 @@ async function loadWeather(place, label) {
             statusMessage.textContent = `Impossible de récupérer la météo pour ${label}.`;
         }
     }
+}
+
+function formatMeasure(data, field) {
+    const value = data.current[field];
+    const unit = data.current_units?.[field];
+    return unit ? `${value} ${unit}` : String(value);
 }
 
 async function fetchWeather(latitude, longitude) {
